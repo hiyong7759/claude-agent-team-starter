@@ -1,0 +1,67 @@
+{
+  "version": "1.1",
+  "workspace_root": ".",
+  "meta_framework": {
+    "name": "claude-agentic-subagent-team",
+    "tag": "SYS",
+    "role": "General-purpose orchestration",
+    "agents": [
+      "ps",
+      "eo",
+      "sa",
+      "se",
+      "re",
+      "pg",
+      "tr",
+      "uv",
+      "docops",
+      "qa",
+      "cr"
+    ],
+    "skills": [
+      "create-req",
+      "create-wi-handoff-packet",
+      "create-wi-evidence-pack",
+      "ce",
+      "pe",
+      "lint",
+      "validate-docs",
+      "skill-creator",
+      "typecheck",
+      "eslint",
+      "prettier",
+      "test",
+      "test-coverage",
+      "build-check",
+      "create-agent",
+      "manage-hooks",
+      "sync-docs-index",
+      "react-best-practices"
+    ]
+  },
+  "domain_projects": [
+    {
+      "project_id": "PRJ-EXAMPLE-001",
+      "tag": "EXM",
+      "name": "example-web-app",
+      "display_name": "Example Web App",
+      "path": "projects/example-web-app",
+      "routing_triggers": [
+        "example",
+        "web-app"
+      ],
+      "custom_agents": [],
+      "custom_skills": [],
+      "tech_stack": [
+        "react",
+        "typescript",
+        "vite"
+      ],
+      "status": "active"
+    }
+  ],
+  "routing_config": {
+    "default_project": "system",
+    "keyword_matching": true
+  }
+}
