@@ -1,6 +1,7 @@
 ---
 name: create-agent
 description: Subagent Creator - Create standardized subagents for the meta framework. This skill should be used when adding new subagents to .claude/agents/ with proper YAML frontmatter, initialization requirements, mandatory rules, and output specifications.
+model: opus
 ---
 
 # Create Agent
@@ -52,7 +53,7 @@ Every agent MUST include these sections:
 name: <agent-id>
 description: <Role> - <Key responsibilities>. <Usage hint>.
 tools: <Comma-separated tool list>
-model: <sonnet|opus>
+model: <haiku|sonnet|opus>
 ---
 ```
 
@@ -68,7 +69,7 @@ You are <NAME>. Your goal is to <primary objective in quotes>.
 
 ```markdown
 ## Mandatory Rules
-- At task start, treat `docs/standards/core-principles.md` (constitution) as baseline injection and prohibit violations.
+- At task start, treat `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md` (Tier 0) as baseline injection and prohibit violations.
 - <Agent-specific rule 1>
 - <Agent-specific rule 2>
 - Always create deliverables in **two sets**:
@@ -100,7 +101,7 @@ After creating the agent file, update framework registration:
 
 1. Add to CLAUDE.md routing matrix
 2. Add to `.claude/config/workspace.json` agents array
-3. Document in `docs/guides/` if specialized workflow needed
+3. Document in `docs/rules/` if specialized workflow needed
 
 ## Agent Naming Conventions
 

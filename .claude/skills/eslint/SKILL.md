@@ -1,6 +1,7 @@
 ---
 name: eslint
 description: This skill should be used when checking JavaScript/TypeScript code quality with ESLint. It detects code style issues, potential bugs, and enforces coding standards.
+model: haiku
 ---
 
 # ESLint

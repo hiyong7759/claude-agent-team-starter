@@ -9,7 +9,7 @@ Every agent file must begin with YAML frontmatter containing exactly these field
 name: <string>           # Required: 2-3 character agent identifier
 description: <string>    # Required: Role - Responsibilities. Usage hint.
 tools: <string>          # Required: Comma-separated tool list
-model: <string>          # Required: "sonnet" or "opus"
+model: <string>          # Required: "haiku", "sonnet", or "opus"
 ---
 ```
 

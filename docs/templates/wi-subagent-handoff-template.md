@@ -59,11 +59,10 @@ status: stable
 ### 2.1 Required Documents (pointers)
 
 - Tier 0 (assume base injection):
-  - `docs/standards/core-principles.md`
-  - `docs/standards/development-standards.md`
-  - `docs/policies/security-policy.md`
-  - `docs/standards/documentation-standards.md`
-  - `docs/architecture/system-design.md`
+  - `docs/rules/hard-rules.md`
+  - `docs/rules/output-contracts.md`
+- Tier 1 (agent-specific, from module-injection-matrix.json):
+  - `docs/rules/<module>.md`
 - Work-related (add only needed):
   - `docs/...`
 
@@ -96,7 +95,7 @@ python3 .claude/scripts/context_manager.py --text "<WI summary sentence>" --incl
 - **Content**: change summary / impact / risks / approval points (if any)
 - **Format**: Markdown
 - **Save location (recommended)**:
-  - `deliverables/user/<WI-ID>-summary.md`
+  - `deliverables/<PRJ>/<YYYYMMDD>/user/<WI-ID>-summary.md`
 
 ### 3.2 Agent-facing (for tracking/reuse, pointer-centric)
 
@@ -106,9 +105,9 @@ python3 .claude/scripts/context_manager.py --text "<WI summary sentence>" --incl
   - Reproduction/test procedures (if possible)
   - Follow-up WI suggestions (if any)
 - **Format**: Markdown (+ log/patch files if needed)
-- **Standard**: `docs/standards/evidence-pack-standard.md`
+- **Standard**: `docs/rules/output-contracts.md`
 - **Save location (recommended)**:
-  - `deliverables/agent/<WI-ID>-evidence-pack.md`
+  - `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md`
 
 ---
 
@@ -148,8 +147,8 @@ Files:
 Repro/Logs:
 
 [OUTPUT CONTRACT]
-User-facing -> deliverables/user/... :
-Agent-facing -> deliverables/agent/... :
+User-facing -> deliverables/<PRJ>/<YYYYMMDD>/user/... :
+Agent-facing -> deliverables/<PRJ>/<YYYYMMDD>/agent/... :
 
 [TRACEABILITY REQUIREMENTS]
 Evidence pointers (files/lines/commands/logs):

@@ -9,19 +9,20 @@
       "ps",
       "eo",
       "sa",
-      "se",
+      "fe",
+      "be",
       "re",
       "pg",
       "tr",
       "uv",
       "docops",
-      "qa",
-      "cr"
+      "qa"
     ],
     "skills": [
       "create-req",
       "create-wi-handoff-packet",
       "create-wi-evidence-pack",
+      "spawn-impl-team",
       "ce",
       "pe",
       "lint",
@@ -37,7 +38,19 @@
       "manage-hooks",
       "sync-docs-index",
       "react-best-practices"
-    ]
+    ],
+    "teams": {
+      "impl-team": {
+        "members": [
+          "fe",
+          "be",
+          "qa",
+          "re"
+        ],
+        "skill": "spawn-impl-team",
+        "config": ".claude/config/team-definitions.json"
+      }
+    }
   },
   "domain_projects": [
     {

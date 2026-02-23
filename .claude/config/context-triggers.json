@@ -2,62 +2,69 @@
     "triggers": [
         {
             "category": "Security Policy",
-            "regex": "password|비밀번호|security|보안|secret|시크릿|token|토큰|key|키|reset|초기화",
+            "regex": "password|security|secret|token|key|reset",
             "load": [
-                "docs/policies/security-policy.md"
+                "docs/rules/security-rules.md"
             ]
         },
         {
-            "category": "Database Standards",
-            "regex": "database|데이터베이스|schema|스키마|db|sql|migration|마이그레이션",
+            "category": "Development Standards",
+            "regex": "database|schema|db|sql|migration|coding|naming",
             "load": [
-                "docs/standards/development-standards.md"
+                "docs/rules/ts-impl-rules.md",
+                "docs/rules/naming-rules.md"
             ]
         },
         {
             "category": "Versioning & Deployment",
-            "regex": "deploy|배포|production|프로덕션|release|릴리스|version|버전",
+            "regex": "deploy|production|release|version",
             "load": [
-                "docs/policies/versioning-policy.md"
+                "docs/rules/execution-rules.md"
             ]
         },
         {
             "category": "Documentation Standards",
-            "regex": "prd|spec|document|문서|write|작성|template|템플릿",
+            "regex": "prd|spec|document|write|template",
             "load": [
-                "docs/standards/documentation-standards.md"
+                "docs/rules/doc-rules.md"
             ]
         },
         {
             "category": "MA Workflow (REQ/WI Loop)",
-            "regex": "REQ|요구사항|requirement|WI|work\\s*item|작업\\s*항목|작업지시|workflow|워크플로우",
+            "regex": "REQ|requirement|WI|work\\s*item|workflow",
             "load": [
-                "docs/guides/development-workflow.md",
-                "docs/standards/glossary.md",
-                "docs/guides/traceability.md"
+                "docs/rules/workflow-rules.md",
+                "docs/rules/glossary.md",
+                "docs/rules/hard-rules.md"
             ]
         },
         {
             "category": "Agent System (Subagents/Skills/DocOps)",
-            "regex": "subagent|서브에이전트|skills?|스킬|docops|문서\\s*운영|routing|라우팅|agent\\s*docs\\s*map",
+            "regex": "subagent|skills?|docops|routing|agent\\s*docs\\s*map",
             "load": [
-                "docs/architecture/system-design.md",
-                "docs/guides/agent-docs-map.md"
+                "docs/rules/workflow-rules.md"
             ]
         },
         {
             "category": "Execution / HITL Policy",
-            "regex": "execute|실행|command|명령|approval|승인|HITL|tool",
+            "regex": "execute|command|approval|HITL|tool",
             "load": [
-                "docs/policies/execution-policy.md"
+                "docs/rules/execution-rules.md"
             ]
         },
         {
-            "category": "Observability & Logs",
-            "regex": "observability|관측|log|로그|trace|추적|retention|보존|postmortem|회고",
+            "category": "Testing & Quality",
+            "regex": "test|quality|lint|coverage|regression",
             "load": [
-                "docs/policies/future-policy-stubs.md",
-                "docs/guides/runbook-postmortem.md"
+                "docs/rules/test-rules.md",
+                "docs/rules/quality-gates-rules.md"
+            ]
+        },
+        {
+            "category": "Code Review",
+            "regex": "review|CR|best\\s*practice",
+            "load": [
+                "docs/rules/review-rules.md"
             ]
         }
     ]

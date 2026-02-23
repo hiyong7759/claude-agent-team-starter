@@ -82,4 +82,4 @@ After creating an agent:
 1. **CLAUDE.md**: Add to routing matrix table
 2. **workspace.json**: Add to `agents` array
 3. **This document**: Update routing matrix
-4. **docs/guides/**: Add workflow guide if complex
+4. **docs/rules/**: Add rule module if specialized rules needed

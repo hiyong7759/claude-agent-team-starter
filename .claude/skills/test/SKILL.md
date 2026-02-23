@@ -1,6 +1,7 @@
 ---
 name: test
 description: This skill should be used when running project test suites. It executes tests using the project's configured test framework (Jest, Vitest, etc.) and reports results.
+model: haiku
 ---
 
 # Test

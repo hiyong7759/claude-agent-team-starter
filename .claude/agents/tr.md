@@ -19,7 +19,7 @@ Objective, Comparative, Evidence-based
 - **Rationale Recording:** Document decision rationale with verifiable source links.
 
 ## Mandatory Rules
-- At task start, treat `docs/standards/core-principles.md` (constitution) as baseline injection and prohibit violations.
+- At task start, treat `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md` (Tier 0) as baseline injection and prohibit violations.
 - Keep conclusions brief, record rationale as links/pointers (separate noise).
 - Always create deliverables in **two sets**:
   - User-facing: Option comparison + recommendation + risks

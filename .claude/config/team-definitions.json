@@ -1,0 +1,125 @@
+{
+  "version": "2.0",
+  "description": "Agent team composition definitions. v2.0: se→fe/be split, cr absorbed into qa.",
+  "teams": {
+    "impl-team": {
+      "display_name": "Implementation Team (fe + be + qa + re)",
+      "description": "Frontend/backend implementation, quality review, and testing as a coordinated team with feedback loops",
+      "members": [
+        {
+          "agent": "be",
+          "role": "backend-implementer",
+          "order": 1,
+          "starts_blocked": false,
+          "_note": "BE goes first: defines types, services, mock data (shared contracts)"
+        },
+        {
+          "agent": "fe",
+          "role": "frontend-implementer",
+          "order": 2,
+          "starts_blocked": true,
+          "unblocked_by": "be",
+          "_note": "FE starts after BE provides type contracts and service interfaces"
+        },
+        {
+          "agent": "qa",
+          "role": "reviewer",
+          "order": 3,
+          "starts_blocked": true,
+          "unblocked_by": "fe",
+          "_note": "QA reviews both FE and BE code, checks cross-cutting alignment"
+        },
+        {
+          "agent": "re",
+          "role": "tester",
+          "order": 4,
+          "starts_blocked": true,
+          "unblocked_by": "qa",
+          "_note": "RE runs independent verification after QA approval"
+        }
+      ],
+      "feedback_loops": [
+        {
+          "from": "qa",
+          "to": "fe",
+          "trigger": "frontend_issues_found",
+          "max_iterations": 3,
+          "description": "qa finds FE issues -> fe fixes -> qa re-reviews"
+        },
+        {
+          "from": "qa",
+          "to": "be",
+          "trigger": "backend_issues_found",
+          "max_iterations": 3,
+          "description": "qa finds BE issues -> be fixes -> qa re-reviews"
+        },
+        {
+          "from": "qa",
+          "to": "fe",
+          "trigger": "contract_mismatch",
+          "max_iterations": 2,
+          "description": "qa finds FE-BE contract mismatch -> fe/be fix -> qa re-checks"
+        },
+        {
+          "from": "re",
+          "to": "fe",
+          "trigger": "frontend_test_failures",
+          "max_iterations": 2,
+          "description": "re finds FE test failures -> fe fixes -> re re-tests"
+        },
+        {
+          "from": "re",
+          "to": "be",
+          "trigger": "backend_test_failures",
+          "max_iterations": 2,
+          "description": "re finds BE test failures -> be fixes -> re re-tests"
+        }
+      ],
+      "quality_gates": {
+        "be": {
+          "completion_requires": "type_and_service_changes",
+          "hook": "verify-task-complete",
+          "evidence": "Type definitions and service files changed"
+        },
+        "fe": {
+          "completion_requires": "component_and_page_changes",
+          "hook": "verify-task-complete",
+          "evidence": "Component/page files changed"
+        },
+        "qa": {
+          "completion_requires": "quality_report",
+          "hook": "verify-task-complete",
+          "evidence": "*-qa-report.md file in deliverables"
+        },
+        "re": {
+          "completion_requires": "verification_report",
+          "hook": "verify-task-complete",
+          "evidence": "*-re-verification.md file in deliverables"
+        }
+      },
+      "deliverables": {
+        "coordination_doc": "{WI_ID}-team-coordination.md",
+        "qa_report": "{WI_ID}-qa-report.md",
+        "verification_report": "{WI_ID}-re-verification.md",
+        "evidence_pack": "{WI_ID}-evidence-pack.md"
+      },
+      "cost_multiplier": "4-6x compared to single subagent",
+      "recommended_when": [
+        "FE + BE implementation + review + testing as one unit",
+        "Expected file changes >= 10",
+        "Complex FE-BE integration requiring cross-cutting review"
+      ],
+      "not_recommended_when": [
+        "Single-layer task (FE only or BE only)",
+        "Pure research or documentation",
+        "Simple bug fix (< 3 files)"
+      ]
+    }
+  },
+  "global_settings": {
+    "max_team_size": 5,
+    "default_feedback_max_iterations": 3,
+    "idle_timeout_minutes": 10,
+    "team_name_format": "{team_type}-{WI_ID}"
+  }
+}

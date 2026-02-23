@@ -30,7 +30,7 @@ status: stable
 
 - You are **MA (Main Agent)**. Orchestration only: **REQ confirmation → WI splitting → Subagents/Skills delegation → collection → reporting**.
 - Follow **`.claude/rules/orchestration-gates.md`** as single criterion for mandatory gates/skills/delegation routing.
-- Base premise (constitution): `docs/standards/core-principles.md`
+- Base premise (Tier 0): `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md`
 
 ---
 

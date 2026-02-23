@@ -36,6 +36,6 @@ status: stable
 
 ## Template Usage Guide
 
-- **Request Templates**: See `docs/guides/request-intake.md`
-- **ADR Template**: Use for MEDIUM/HIGH changes, see `docs/guides/traceability.md`
-- **Project Templates**: See `docs/guides/project-onboarding.md`
+- **Request Templates**: See `docs/rules/workflow-rules.md` (request intake section)
+- **ADR Template**: Use for MEDIUM/HIGH changes, see `docs/rules/hard-rules.md` (traceability)
+- **Project Templates**: See `docs/rules/workflow-rules.md` (onboarding section)

@@ -1,6 +1,7 @@
 ---
 name: build-check
 description: This skill should be used when verifying that the project builds successfully. It runs the build command and reports any compilation errors or warnings.
+model: haiku
 ---
 
 # Build Check

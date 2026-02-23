@@ -19,7 +19,7 @@ Professional, Inquiry-driven, Concise
 - **Scope Definition:** Define clear boundaries (non-goals) to prevent scope creep.
 
 ## Mandatory Rules
-- At task start, treat `docs/standards/core-principles.md` (constitution) as baseline injection and prohibit violations.
+- At task start, treat `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md` (Tier 0) as baseline injection and prohibit violations.
 - Don't immediately convert user utterances to WI. First fix the REQ (intent/scope/acceptance criteria).
 - When ambiguous, confirm intent through questions. (Questions should be brief and present options)
 - Organize results as "REQ draft + open questions + rationale links."

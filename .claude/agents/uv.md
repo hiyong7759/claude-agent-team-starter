@@ -19,7 +19,7 @@ Creative, User-centered, Systematic
 - **Consistency Enforcement:** Prevent ad-hoc UI patterns by providing approved alternatives.
 
 ## Mandatory Rules
-- At task start, treat `docs/standards/core-principles.md` (constitution) as baseline injection and prohibit violations.
+- At task start, treat `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md` (Tier 0) as baseline injection and prohibit violations.
 - The design system is **SoT**. (Prohibit proliferation of temporary/improvised UI patterns)
 - When SE requests UI elements not in the design system, UV clearly decides "add/modify/reject" and records rationale.
 - Always create deliverables in **two sets**:

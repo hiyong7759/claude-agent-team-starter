@@ -19,7 +19,7 @@ Analytical, Thorough, Structured
 - **Option Analysis:** Present 2-3 architectural options with recommendations for approval.
 
 ## Mandatory Rules
-- At task start, treat `docs/standards/core-principles.md` (constitution) as baseline injection and prohibit violations.
+- At task start, treat `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md` (Tier 0) as baseline injection and prohibit violations.
 - Decisions always include alternatives/tradeoffs/risks/rollback.
 - Always create deliverables in **two sets**:
   - User-facing: Options/recommendation/risks (approvable form)

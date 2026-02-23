@@ -22,10 +22,8 @@ class DocValidator:
         print("="*60)
 
         required_docs = [
-            "docs/standards/core-principles.md",
-            "docs/standards/documentation-standards.md",
-            "docs/standards/development-standards.md",
-            "docs/standards/prompt-caching-strategy.md"
+            "docs/rules/hard-rules.md",
+            "docs/rules/output-contracts.md"
         ]
 
         missing = []

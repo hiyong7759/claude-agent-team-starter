@@ -39,11 +39,9 @@ python3 .claude/skills/validate-docs/scripts/validate_docs.py
    - Detect broken links to non-existent files
 
 2. **Tier 0 Document References**
-   - Verify existence of required core documents:
-     - `docs/standards/core-principles.md`
-     - `docs/standards/documentation-standards.md`
-     - `docs/standards/development-standards.md`
-     - `docs/standards/prompt-caching-strategy.md`
+   - Verify existence of required rule modules:
+     - `docs/rules/hard-rules.md`
+     - `docs/rules/output-contracts.md`
 
 3. **Traceability IDs**
    - Validate ID format compliance:
@@ -70,7 +68,7 @@ python3 .claude/skills/validate-docs/scripts/validate_docs.py
 ✓ Tier 0 Documents: All required files exist
 
 ✗ Internal Links: 2 broken links found
-  - docs/guides/workflow.md:15 → docs/missing.md (file not found)
+  - docs/rules/workflow-rules.md:15 → docs/missing.md (file not found)
   - README.md:23 → docs/old-path.md (file not found)
 
 ✓ Traceability IDs: No duplicates, format valid

@@ -4,7 +4,7 @@ description: This skill should be used when standardizing Subagent outputs into 
 disable-model-invocation: false
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Write
-model: sonnet
+model: opus
 version: 3.0
 last_updated: 2026-02-05
 ---
@@ -33,6 +33,14 @@ WI ID must include project tag from workspace.json:
 
 **Naming Convention**: `WI-YYYYMMDD-<PRJ>-###-evidence-pack.md`
 
+### Path Derivation Rule
+
+**WI ID → file path mapping**:
+```
+WI-YYYYMMDD-<PRJ>-### → deliverables/<PRJ>/<YYYYMMDD>/{agent|user}/
+```
+Example: `WI-20260205-SYS-001` → `deliverables/SYS/20260205/agent/WI-20260205-SYS-001-evidence-pack.md`
+
 ### Inputs
 
 - WI ID (must include project tag, e.g., `WI-20260201-DDS-001`)
@@ -50,7 +58,7 @@ WI ID must include project tag from workspace.json:
    - **Test results**: If tests were run, include command and outcome
    - **Reference traceability**: Document which Tier 0-2 docs were injected
 3. **Generate output** following the OUTPUT format below
-4. **Save immediately**: Write to `deliverables/agent/<WI-ID>-evidence-pack.md`
+4. **Save immediately**: Write to `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md`
 
 ### Output Format
 
@@ -73,9 +81,9 @@ Generate an Evidence Pack following this structure:
 
 | Tier | Document | Reason |
 |------|----------|--------|
-| 0 | docs/standards/core-principles.md | Constitution (all agents) |
-| 0 | docs/standards/development-standards.md | Assignee: se |
-| 1 | docs/policies/security-policy.md | Task type: security |
+| 0 | docs/rules/hard-rules.md | Hard rules (all agents) |
+| 0 | docs/rules/output-contracts.md | Output contracts (all agents) |
+| 1 | docs/rules/security-rules.md | Assignee: pg, or task: security |
 
 **Injection Rules Applied**:
 - Rule source: `.claude/config/context-injection-rules.json`
@@ -116,7 +124,7 @@ Generate an Evidence Pack following this structure:
 - **Include test evidence**: Commands and results, not just "tested"
 - **Document rollback**: How to undo if needed
 - **List injected docs**: For traceability, document which context was provided
-- **Save to**: `deliverables/agent/<WI-ID>-evidence-pack.md`
+- **Save to**: `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md`
 
 ## Execution
 
@@ -128,7 +136,7 @@ Generate an Evidence Pack following this structure:
 
 ```
 1. Extract WI ID from invocation (e.g., WI-20260205-SYS-001)
-2. Check if deliverables/agent/<WI-ID>-handoff.md exists
+2. Check if deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-handoff.md exists
 3. If NOT exists:
    - STOP execution
    - Output: "⛔ BLOCKED: WI handoff packet이 없습니다. 먼저 /create-wi-handoff-packet으로 WI를 생성하세요."
@@ -139,7 +147,7 @@ Generate an Evidence Pack following this structure:
 
 Upon invocation (after precondition passes):
 
-1. **Read** WI handoff packet from `deliverables/agent/<WI-ID>-handoff.md`
+1. **Read** WI handoff packet from `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-handoff.md`
 2. **Extract** INPUT POINTERS section from handoff packet
 3. **Parse** Tier 0, Tier 1, Tier 2 documents from INPUT POINTERS
 4. **Collect** work results:
@@ -149,7 +157,7 @@ Upon invocation (after precondition passes):
    - Risks identified
 5. **Generate** Evidence Pack following Output Format above
 6. **Auto-populate** Reference Documents section from handoff's INPUT POINTERS
-7. **Write** evidence pack to `deliverables/agent/<WI-ID>-evidence-pack.md`
+7. **Write** evidence pack to `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md`
 8. **Report** the file path to user
 
 **DO NOT** just show the format and wait - **CREATE** the evidence pack immediately.

@@ -1,6 +1,7 @@
 ---
 name: typecheck
 description: This skill should be used when verifying TypeScript type safety in a project. It runs the TypeScript compiler in type-check-only mode to catch type errors without emitting files.
+model: haiku
 ---
 
 # Typecheck

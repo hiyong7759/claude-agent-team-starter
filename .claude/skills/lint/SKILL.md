@@ -4,7 +4,7 @@ description: This skill should be used when verifying code and document quality 
 disable-model-invocation: false
 user-invocable: true
 allowed-tools: Bash, Read, Glob
-model: sonnet
+model: haiku
 ---
 
 # Lint

@@ -53,7 +53,7 @@ What does this project (product/service) do, who are the users, and what are the
 ### Glossary Rules (required)
 
 - Project terms are based on **project glossary**: `docs/project/glossary.md` (create in project repo)
-- Avoid conflicts with System (Global) terms from `agentic-subagent-team/docs/standards/glossary.md`
+- Avoid conflicts with System (Global) terms from `agentic-subagent-team/docs/rules/glossary.md`
 - If conflict is unavoidable, specify "meaning in this project" here (project domain context) and reflect in project glossary
 
 ## 5) Policies & Constraints

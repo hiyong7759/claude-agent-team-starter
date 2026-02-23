@@ -1,6 +1,7 @@
 ---
 name: test-coverage
 description: This skill should be used when analyzing test coverage metrics. It runs tests with coverage collection and reports line, branch, and function coverage percentages.
+model: haiku
 ---
 
 # Test Coverage

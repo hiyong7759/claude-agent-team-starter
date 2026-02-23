@@ -4,9 +4,9 @@ description: This skill should be used when normalizing user requests into REQ (
 disable-model-invocation: false
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Write
-model: sonnet
-version: 3.0
-last_updated: 2026-02-05
+model: opus
+version: 4.0
+last_updated: 2026-02-15
 ---
 
 # Create REQ
@@ -98,12 +98,13 @@ Status: draft (approval pending)
   - Project-specific constraints
 
 [EXECUTION STRATEGY]
-| Task | Subagent | Skill | Context Injection |
-|------|----------|-------|-------------------|
-| Task description | Agent name | Skill name or - | Tier docs + files |
+| Phase | WI | Agent | Mode | Skill | Context Injection |
+|-------|-----|-------|------|-------|-------------------|
+| N | WI-###: task description | agent(s) | subagent or team:impl-team | /skill-name | Tier docs + files |
 
 (Subagent and Model are defined in CLAUDE.md Routing Matrix - single source of truth)
 (Context Injection: List required Tier 0/1/2 docs per context-injection-rules.json)
+(Mode determines which skill triggers: subagent → /create-wi-handoff-packet, team:impl-team → /spawn-impl-team)
 
 [PARALLEL WORK PLAN]
 
@@ -122,27 +123,46 @@ Status: draft (approval pending)
 - **Code review**: Split by functional area (each cr instance reviews different scope)
 - **Testing**: Split by test suite if independent (unit ∥ integration ∥ e2e)
 
-| Phase | WI (parallel within phase) | Depends On |
-|-------|---------------------------|------------|
-| 1 | WI-001: task ∥ WI-002: task ∥ WI-003: task | - |
-| 2 | WI-004: task | Phase 1 |
-| N-1 | WI-X: typecheck ∥ WI-Y: eslint ∥ WI-Z: test | Phase N-2 |
-| N | WI-A: review-area1 ∥ WI-B: review-area2 ∥ WI-C: review-area3 | Phase N-1 |
+| Phase | WI (parallel within phase) | Mode | Depends On |
+|-------|---------------------------|------|------------|
+| 1 | WI-001: task ∥ WI-002: task ∥ WI-003: task | subagent or team:impl-team | - |
+| 2 | WI-004: task | subagent | Phase 1 |
+| N-1 | WI-X: typecheck ∥ WI-Y: eslint ∥ WI-Z: test | subagent | Phase N-2 |
+| N | WI-A: review-area1 ∥ WI-B: review-area2 ∥ WI-C: review-area3 | subagent | Phase N-1 |
 
-**Example (Auth Feature)**:
-| Phase | WI | Agent | Depends On |
-|-------|-----|-------|------------|
-| 1 | WI-001: login ∥ WI-002: signup ∥ WI-003: password-reset | se ∥ se ∥ se | - |
-| 2 | WI-004: typecheck ∥ WI-005: eslint ∥ WI-006: test | qa ∥ qa ∥ qa | Phase 1 |
-| 3 | WI-007: review-login ∥ WI-008: review-signup ∥ WI-009: review-password | cr ∥ cr ∥ cr | Phase 2 |
+**Mode Selection Criteria (MA auto-judgment)**:
+
+| Condition | Mode | Reason |
+|-----------|------|--------|
+| impl + review + test as one unit | `team:impl-team` | Feedback loop efficiency |
+| Single agent sufficient | `subagent` | Team overhead unnecessary |
+| Simple QA (lint/type/test only) | `subagent` | Independent work, no feedback |
+| Expected file changes >= 10 | `team:impl-team` | High review complexity |
+
+User has final decision — MA judgment is a recommendation only.
+
+**Example (Auth Feature - subagent mode)**:
+| Phase | WI | Agent | Mode | Depends On |
+|-------|-----|-------|------|------------|
+| 1 | WI-001: login ∥ WI-002: signup ∥ WI-003: password-reset | se ∥ se ∥ se | subagent | - |
+| 2 | WI-004: typecheck ∥ WI-005: eslint ∥ WI-006: test | qa ∥ qa ∥ qa | subagent | Phase 1 |
+| 3 | WI-007: review-login ∥ WI-008: review-signup ∥ WI-009: review-password | cr ∥ cr ∥ cr | subagent | Phase 2 |
+
+**Example (Complex Feature - team mode)**:
+| Phase | WI | Agent | Mode | Depends On |
+|-------|-----|-------|------|------------|
+| 1 | WI-001: login impl+review+test | se,cr,re | team:impl-team | - |
+| 2 | WI-002: typecheck ∥ WI-003: eslint | qa ∥ qa | subagent | Phase 1 |
 
 **Anti-patterns (AVOID)**:
 - ❌ `WI-X: typecheck/lint/test` → Split into 3 WIs
 - ❌ `WI-X: full code review` → Split by scope/area
 - ❌ `WI-X: entire section` (30+ files) → Split by feature/component
 
-Note: Upon REQ approval, generate each WI immediately using /create-wi-handoff-packet.
-Each WI packet contains its own agent assignment, skill chain, and quality gates.
+Note: Upon REQ approval, Mode determines which skill triggers:
+- `subagent` mode → `/create-wi-handoff-packet` → individual WI handoff → Task(subagent)
+- `team:impl-team` mode → `/spawn-impl-team` → team WI + coordination doc → team spawn
+Each WI packet/coordination doc contains its own agent assignment, skill chain, and quality gates.
 
 [QUALITY GATES]
 | Gate | Condition | Verification |
@@ -175,8 +195,11 @@ Each WI packet contains its own agent assignment, skill chain, and quality gates
   - ALWAYS split code review by scope: review-area1 ∥ review-area2 (N WIs, not 1)
   - Target 5-15 files per WI for optimal balance
 - **Define quality gates**: Set checkpoints to verify quality at key milestones
-- **Generate WI immediately**: Upon REQ approval, use `/create-wi-handoff-packet` for each planned WI
-- **Save to**: `deliverables/user/<REQ-ID>.md` after approval
+- **Assign Mode per WI**: Apply MA auto-judgment criteria for each WI (see Mode Selection Criteria)
+- **Generate WI immediately**: Upon REQ approval, use Mode-appropriate skill:
+  - `subagent` → `/create-wi-handoff-packet`
+  - `team:impl-team` → `/spawn-impl-team`
+- **Save to**: `deliverables/<PRJ>/<YYYYMMDD>/user/<REQ-ID>.md` after approval
 
 ## Execution
 
@@ -192,7 +215,7 @@ Upon invocation with user requirement:
    - For each task row, look up the Subagent column value
    - Query `agent_specific_requirements[subagent].required` from context-injection-rules.json
    - Insert the required documents into Context Injection column
-6. **Write** REQ file to `deliverables/user/<REQ-ID>.md` using Write tool
+6. **Write** REQ file to `deliverables/<PRJ>/<YYYYMMDD>/user/<REQ-ID>.md` using Write tool
 7. **Report** the file path to user for review
 
 ### Context Injection Column Auto-Generation

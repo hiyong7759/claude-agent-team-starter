@@ -83,14 +83,14 @@ Recommended operation:
 ### 4.2 Work Items (WI) — DAG & Progress
 
 > Evidence Pack operational rules:
-> - Standard path: `deliverables/agent/<WI-ID>-evidence-pack.md`
-> - Standard document: `docs/standards/evidence-pack-standard.md`
+> - Standard path: `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md`
+> - Standard document: `docs/rules/output-contracts.md`
 
 | PRJ | CTX | WI | Title | Status | Depends/Blocked by | Parallelizable with | Trigger event(s) | WI Link | Evidence Pack | PR/Link | Progress |
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
-| PRJ-EXAMPLE | CTX-EXAMPLE | WI-EXAMPLE | Example: "Expand impact-analysis" | In Review | WI-... | WI-... | PR merge | `{project repo}/docs/.../WI-EXAMPLE.md` | `deliverables/agent/WI-EXAMPLE-evidence-pack.md` | (PR link) | 70% |
-| system | CTX-DOCOPS | WI-20260127-001 | Index display name Korean/meaning unification + link consistency check | Done | - | - | Artifact Done | `docs/work-items/WI-20260127-001-index-display-name-koreanize.md` | `deliverables/agent/WI-20260127-001-evidence-pack.md` | - | 100% |
-| system | CTX-DOCOPS | WI-20260127-002 | Agent-facing document set organization/operation standardization | In Review | WI-20260127-001 (Done) | - | Approval Done (user approval) → Artifact Done | `docs/work-items/WI-20260127-002-agent-facing-docset-ops-standardization.md` | `deliverables/agent/WI-20260127-002-evidence-pack.md` | - | 80% |
+| PRJ-EXAMPLE | CTX-EXAMPLE | WI-EXAMPLE | Example: "Expand impact-analysis" | In Review | WI-... | WI-... | PR merge | `{project repo}/docs/.../WI-EXAMPLE.md` | `deliverables/<PRJ>/<YYYYMMDD>/agent/WI-EXAMPLE-evidence-pack.md` | (PR link) | 70% |
+| system | CTX-DOCOPS | WI-20260127-001 | Index display name Korean/meaning unification + link consistency check | Done | - | - | Artifact Done | `docs/work-items/WI-20260127-001-index-display-name-koreanize.md` | `deliverables/SYS/20260127/agent/WI-20260127-001-evidence-pack.md` | - | 100% |
+| system | CTX-DOCOPS | WI-20260127-002 | Agent-facing document set organization/operation standardization | In Review | WI-20260127-001 (Done) | - | Approval Done (user approval) → Artifact Done | `docs/work-items/WI-20260127-002-agent-facing-docset-ops-standardization.md` | `deliverables/SYS/20260127/agent/WI-20260127-002-evidence-pack.md` | - | 80% |
 
 ---
 
@@ -104,10 +104,10 @@ Recommended operation:
 
 ## 6) Connected Documents
 
-- Request starting point: `docs/guides/request-intake.md`
-- Work management/change management (including orchestration): `docs/guides/operation-process.md`
+- Request starting point: `docs/rules/workflow-rules.md`
+- Work management/change management (including orchestration): `docs/rules/workflow-rules.md`
 - Impact/parallel/trigger notation: `docs/templates/impact-analysis-template.md`
-- Agent-facing documents guide: `docs/guides/agent-facing-docs.md`
-- Evidence Pack standard: `docs/standards/evidence-pack-standard.md`
+- Agent-facing documents guide: `docs/rules/output-contracts.md`
+- Evidence Pack standard: `docs/rules/output-contracts.md`
 - Context instance list: `docs/registry/context-registry.md`
 - Project list: `docs/registry/project-registry.md`

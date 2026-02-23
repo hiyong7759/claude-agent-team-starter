@@ -59,17 +59,12 @@ class QuickValidator:
     def check_index_counts(self) -> bool:
         """Verify docs/index.md counts match actual file counts."""
         # Categories to check (directory -> max_depth)
+        # Must match docs/index.md "Document Overview" table
         categories = {
-            'architecture': 1,
-            'design': None,  # recursive
-            'guides': 1,
-            'policies': 1,
-            'standards': 1,
-            'templates': 1,
+            'rules': 1,
+            'templates': None,  # recursive (managed via templates/index.md)
             'registry': 1,
             'adr': 1,
-            'analysis': 1,
-            'eval': 1,
         }
 
         # Count actual files

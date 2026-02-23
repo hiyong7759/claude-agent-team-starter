@@ -4,7 +4,7 @@ description: This skill should be used when strengthening Subagent instruction p
 disable-model-invocation: false
 user-invocable: true
 allowed-tools: Read, Grep, Glob
-model: sonnet
+model: opus
 ---
 
 # PE (Prompt Engineering)
@@ -44,8 +44,8 @@ Generate a single text block that can be **prepended to the WI handoff packet**:
 [PE WRAP — prepend to WI handoff]
 - Obey the WI packet strictly. Do not deviate from stated scope.
 - Output must follow the Output Contract paths exactly:
-  - User-facing: deliverables/user/<WI-ID>-summary.md
-  - Agent-facing: deliverables/agent/<WI-ID>-evidence-pack.md
+  - User-facing: deliverables/<PRJ>/<YYYYMMDD>/user/<WI-ID>-summary.md
+  - Agent-facing: deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md
 - Use pointers (file:line) instead of pasting large excerpts.
 - Evidence requirements:
   - Files changed: List all with brief "what/why"

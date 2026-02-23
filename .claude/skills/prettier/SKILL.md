@@ -1,6 +1,7 @@
 ---
 name: prettier
 description: This skill should be used when verifying code formatting consistency with Prettier. It checks if code matches the project's formatting rules without modifying files.
+model: haiku
 ---
 
 # Prettier

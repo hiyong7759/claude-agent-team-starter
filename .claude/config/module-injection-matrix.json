@@ -1,0 +1,55 @@
+{
+  "version": "2.0",
+  "_description": "Module injection matrix. Maps agents to their required rule modules. v2.0: se→fe/be split, cr absorbed into qa.",
+
+  "modules": {
+    "hard-rules": { "path": "docs/rules/hard-rules.md", "tier": 0, "inject": "always" },
+    "output-contracts": { "path": "docs/rules/output-contracts.md", "tier": 0, "inject": "always" },
+    "glossary": { "path": "docs/rules/glossary.md", "tier": 1, "inject": "conditional", "target_agents": ["docops"] },
+    "ts-impl-rules": { "path": "docs/rules/ts-impl-rules.md", "tier": 1, "inject": "conditional", "condition": "typescript" },
+    "python-rules": { "path": "docs/rules/python-rules.md", "tier": 1, "inject": "conditional", "condition": "python" },
+    "naming-rules": { "path": "docs/rules/naming-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["fe", "be", "qa", "uv"] },
+    "test-rules": { "path": "docs/rules/test-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["re", "qa"] },
+    "review-rules": { "path": "docs/rules/review-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["qa"] },
+    "quality-gates-rules": { "path": "docs/rules/quality-gates-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["qa", "re"] },
+    "security-rules": { "path": "docs/rules/security-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["pg", "qa"] },
+    "execution-rules": { "path": "docs/rules/execution-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["eo", "pg"] },
+    "doc-rules": { "path": "docs/rules/doc-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["docops"] },
+    "workflow-rules": { "path": "docs/rules/workflow-rules.md", "tier": 1, "inject": "conditional", "target_agents": ["ma"] }
+  },
+
+  "agent_matrix": {
+    "_comment": "Quick lookup: agent -> required modules. fe=frontend only, be=backend only, qa=full-stack (cross-cutting).",
+    "ps":     ["hard-rules", "output-contracts"],
+    "eo":     ["hard-rules", "output-contracts", "execution-rules"],
+    "sa":     ["hard-rules", "output-contracts"],
+    "fe":     ["hard-rules", "output-contracts", "naming-rules"],
+    "be":     ["hard-rules", "output-contracts", "naming-rules"],
+    "re":     ["hard-rules", "output-contracts", "test-rules", "quality-gates-rules"],
+    "pg":     ["hard-rules", "output-contracts", "security-rules", "execution-rules"],
+    "tr":     ["hard-rules", "output-contracts"],
+    "uv":     ["hard-rules", "output-contracts", "naming-rules"],
+    "docops": ["hard-rules", "output-contracts", "doc-rules", "glossary"],
+    "qa":     ["hard-rules", "output-contracts", "test-rules", "quality-gates-rules", "review-rules", "naming-rules", "security-rules"]
+  },
+
+  "conditional_modules": {
+    "_comment": "Tech-stack conditional. fe gets frontend rules, be gets backend rules, qa gets both for cross-cutting review.",
+    "typescript": {
+      "agents": ["be", "qa"],
+      "modules": ["ts-impl-rules"]
+    },
+    "python": {
+      "agents": ["be", "qa"],
+      "modules": ["python-rules"]
+    },
+    "react": {
+      "agents": ["fe", "qa", "uv"],
+      "modules": [".claude/skills/react-best-practices/AGENTS.md"]
+    },
+    "react-native": {
+      "agents": ["fe", "qa", "uv"],
+      "modules": [".claude/skills/react-best-practices/AGENTS.md"]
+    }
+  }
+}

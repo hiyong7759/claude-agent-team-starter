@@ -4,7 +4,7 @@ description: This skill should be used when MA delegates work to Subagents. It g
 disable-model-invocation: false
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Write
-model: sonnet
+model: opus
 version: 3.0
 last_updated: 2026-02-05
 ---
@@ -37,17 +37,27 @@ Generate standard instruction packets for Subagent delegation with consistent st
 - Example: `WI-20260201-SYS-001-handoff.md`
 - Example: `WI-20260201-DDS-001-summary.md`
 
+### Path Derivation Rule
+
+**WI/REQ ID → file path mapping**:
+```
+WI-YYYYMMDD-<PRJ>-### → deliverables/<PRJ>/<YYYYMMDD>/{agent|user}/
+REQ-YYYYMMDD-<PRJ>-### → deliverables/<PRJ>/<YYYYMMDD>/user/
+```
+Example: `WI-20260205-SYS-001` → `deliverables/SYS/20260205/agent/WI-20260205-SYS-001-handoff.md`
+
 ### WI Sequence Number Assignment
 
 **CRITICAL: Check existing WIs before assigning new WI ID**
 
-1. **Scan existing WIs**: Check `deliverables/agent/` for files matching pattern `WI-YYYYMMDD-<PRJ>-*`
+1. **Scan existing WIs**: Check `deliverables/<PRJ>/<YYYYMMDD>/agent/` for files matching pattern `WI-*`
 2. **Extract highest number**: Parse sequence numbers from matching files
 3. **Assign next number**: Use highest + 1 for new WI
 
 **Algorithm**:
 ```
-1. List files in deliverables/agent/ matching WI-<today>-<PRJ>-*
+1. List files in deliverables/<PRJ>/<YYYYMMDD>/agent/ matching WI-<today>-<PRJ>-*
+   (If directory does not exist, start with 001)
 2. Extract ### portion from each filename
 3. Find max(###) from existing files
 4. New WI ID = WI-YYYYMMDD-<PRJ>-{max + 1, zero-padded to 3 digits}
@@ -75,12 +85,17 @@ Generate standard instruction packets for Subagent delegation with consistent st
 
 #### 1. Required Tier 0 Documents (by Assignee)
 
-All Subagents receive Tier 0 documents based on their role:
-- `docs/standards/core-principles.md` - All agents
-- `docs/standards/development-standards.md` - se, sa, qa, cr
-- `docs/standards/documentation-standards.md` - docops
-- `docs/standards/glossary.md` - docops
-- `docs/policies/security-policy.md` - pg, cr
+All Subagents receive rule modules based on their role (see `module-injection-matrix.json`):
+- `docs/rules/hard-rules.md` - All agents (Tier 0)
+- `docs/rules/output-contracts.md` - All agents (Tier 0)
+- `docs/rules/naming-rules.md` - se, cr, uv
+- `docs/rules/test-rules.md` - re, qa
+- `docs/rules/review-rules.md` - cr
+- `docs/rules/quality-gates-rules.md` - qa, cr, re
+- `docs/rules/security-rules.md` - pg, cr
+- `docs/rules/execution-rules.md` - eo, pg
+- `docs/rules/doc-rules.md` - docops
+- `docs/rules/glossary.md` - docops
 
 #### 2. Additional Document Inference (LLM analyzes REQ + WI)
 
@@ -88,15 +103,17 @@ Analyze REQ and WI content to select relevant documents:
 
 | Work Characteristics | Documents to Infer |
 |---------------------|-------------------|
-| Security, PII, authentication, authorization | `docs/policies/security-policy.md` |
-| Quality, testing, verification | `docs/policies/quality-gates.md` |
-| Access control, permission management | `docs/policies/access-control-policy.md` |
-| Version management, releases | `docs/policies/versioning-policy.md` |
+| Security, PII, authentication, authorization | `docs/rules/security-rules.md` |
+| Quality, testing, verification | `docs/rules/quality-gates-rules.md`, `docs/rules/test-rules.md` |
+| Code review | `docs/rules/review-rules.md` |
+| Execution safety, approval gates | `docs/rules/execution-rules.md` |
+| Documentation, glossary | `docs/rules/doc-rules.md`, `docs/rules/glossary.md` |
+| Workflow, process | `docs/rules/workflow-rules.md` |
 
 **Inference Method**:
 1. Analyze REQ GOAL/SCOPE section
 2. Extract keywords/context from WI description
-3. Reference `docs/index.md` and category indexes to identify relevant documents
+3. Reference `.claude/config/module-injection-matrix.json` to identify relevant rule modules
 
 #### 3. Sort Order
 
@@ -104,9 +121,9 @@ Tier 0 → Tier 1 → Tier 2 (for prompt caching efficiency)
 
 #### 4. Document Scope (Meta-only vs Universal)
 
-**Source of Truth**: `docs/index.md` → "Document Scope Classification" section
+**Source of Truth**: `.claude/config/module-injection-matrix.json`
 
-**Rule**: If project tag is NOT `SYS`, exclude meta-only documents from INPUT POINTERS.
+**Rule**: If project tag is NOT `SYS`, exclude workflow-rules.md from INPUT POINTERS (meta-only module).
 
 ### Agent Assignment
 
@@ -120,7 +137,7 @@ Do not re-assign agents in WI. REQ is the single source of truth for agent assig
 **CRITICAL: Before generating output, MUST complete this checklist:**
 
 1. **Reference REQ**: Get agent, skill chain, quality gates from approved REQ
-2. **Check Existing WIs**: Scan `deliverables/agent/WI-YYYYMMDD-<PRJ>-*` to find next sequence number
+2. **Check Existing WIs**: Scan `deliverables/<PRJ>/<YYYYMMDD>/agent/WI-*` to find next sequence number
 3. **Infer Required Docs**: Based on assignee (Tier 0) + REQ/WI content analysis (Tier 1/2)
 4. **MANDATORY: Include ALL required Tier documents** in INPUT POINTERS section
    - ⚠️ VIOLATION: Omitting required docs will cause delegation failure
@@ -130,7 +147,7 @@ Do not re-assign agents in WI. REQ is the single source of truth for agent assig
    - Use **pointers (paths/links)** instead of pasting full content
    - **Require 2-set deliverables**: User-facing + Agent-facing
    - **Enforce traceability**: Evidence pointers, tests, reproducibility
-8. **Save handoff packet**: Write to `deliverables/agent/<WI-ID>-handoff.md` immediately
+8. **Save handoff packet**: Write to `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-handoff.md` immediately
 
 ### Output Format
 
@@ -165,19 +182,27 @@ Quality:
 - [ ] Tests pass
 
 [INPUT POINTERS]
-Tier 0 (Constitution - Required for all):
-- docs/standards/core-principles.md
+Tier 0 (Rule Modules - Required for all):
+- docs/rules/hard-rules.md
+- docs/rules/output-contracts.md
 
-Tier 0 (Standards - Based on Assignee):
-- docs/standards/development-standards.md (if Assignee: se|sa|qa|cr)
-- docs/standards/documentation-standards.md (if Assignee: docops)
-- docs/standards/glossary.md (if Assignee: docops)
+Tier 1 (Rule Modules - Based on Assignee from module-injection-matrix.json):
+- docs/rules/naming-rules.md (if Assignee: se|cr|uv)
+- docs/rules/test-rules.md (if Assignee: re|qa)
+- docs/rules/review-rules.md (if Assignee: cr)
+- docs/rules/quality-gates-rules.md (if Assignee: qa|cr|re)
+- docs/rules/security-rules.md (if Assignee: pg|cr)
+- docs/rules/execution-rules.md (if Assignee: eo|pg)
+- docs/rules/doc-rules.md (if Assignee: docops)
+- docs/rules/glossary.md (if Assignee: docops)
 
-Tier 1 (Policies - Inferred from REQ/WI content):
-- docs/policies/security-policy.md (if work involves: security, PII, auth)
-- docs/policies/quality-gates.md (if work involves: testing, quality)
+Tier 1 (Task-Inferred - from REQ/WI content):
+- docs/rules/security-rules.md (if work involves: security, PII, auth)
+- docs/rules/quality-gates-rules.md (if work involves: testing, quality)
 
 Tier 2 (Tech Stack - Conditional on project tech_stack from workspace.json):
+- docs/rules/ts-impl-rules.md (if tech_stack includes: typescript AND Assignee: se|qa|cr)
+- docs/rules/python-rules.md (if tech_stack includes: python AND Assignee: se|qa|cr)
 - .claude/skills/react-best-practices/AGENTS.md (if tech_stack includes: react AND Assignee: se|qa|cr|uv)
 
 REQ/Context Docs:
@@ -191,11 +216,11 @@ Repro/Logs:
 - command or path to log
 
 [OUTPUT CONTRACT]
-User-facing -> deliverables/user/<WI-ID>-summary.md :
+User-facing -> deliverables/<PRJ>/<YYYYMMDD>/user/<WI-ID>-summary.md :
 - Summary, risks, approval points
-Agent-facing -> deliverables/agent/<WI-ID>-evidence-pack.md :
+Agent-facing -> deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-evidence-pack.md :
 - Evidence pointers, patch notes, repro & tests, follow-up WI
-Handoff Packet -> deliverables/agent/<WI-ID>-handoff.md :
+Handoff Packet -> deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-handoff.md :
 - This packet (for traceability)
 
 [TRACEABILITY REQUIREMENTS]
@@ -217,7 +242,7 @@ Note: SKILL CHAIN, EXECUTION PLAN, QUALITY GATES are defined in REQ - reference 
 - **Track dependencies**: Use Depends On / Blocks for WI sequencing
 - **Require 2 deliverables**: User-facing summary + Agent-facing evidence pack
 - **Enforce traceability**: Pointers, commands, tests must be documented
-- **Save handoff to**: `deliverables/agent/<WI-ID>-handoff.md`
+- **Save handoff to**: `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-handoff.md`
 
 ## Execution
 
@@ -229,7 +254,7 @@ Note: SKILL CHAIN, EXECUTION PLAN, QUALITY GATES are defined in REQ - reference 
 
 ```
 1. Check if REQ ID is provided in invocation
-2. Read deliverables/user/<REQ-ID>.md
+2. Read deliverables/<PRJ>/<YYYYMMDD>/user/<REQ-ID>.md
 3. Verify Status contains "approved" or "✅"
 4. If NOT approved:
    - STOP execution
@@ -243,16 +268,16 @@ Upon invocation with WI assignment (after precondition passes):
 
 1. **Read** approved REQ to get agent assignment, skill chain, quality gates
 2. **Read** `.claude/config/workspace.json` to get project tag
-3. **Read** `.claude/config/context-injection-rules.json` to get injection rules
-4. **Scan** existing WIs in `deliverables/agent/` to determine next sequence number
-5. **Extract Tier 0/1 documents** from `agent_specific_requirements[assignee].required`
+3. **Read** `.claude/config/context-injection-rules.json` and `.claude/config/module-injection-matrix.json` to get injection rules
+4. **Scan** existing WIs in `deliverables/<PRJ>/<YYYYMMDD>/agent/` to determine next sequence number
+5. **Extract required rule modules** from `agent_specific_requirements[assignee].required` (all paths now in `docs/rules/`)
 6. **Match tech_stack_documents**: Read project's `tech_stack` from `workspace.json`, check `tech_stack_documents` in rules for matching entries where `applicable_agents` includes current assignee. If matched, add documents to Tier 2 pointers.
 7. **Match task_type_documents** using 2-phase strategy:
    - **Phase 1 (Keyword)**: Check if WI summary contains any keywords from `task_type_documents.types[].keywords`
    - **Phase 2 (LLM)**: Analyze WI content semantically to identify additional relevant documents
    - **Merge**: Union results from both phases, deduplicate
 8. **Generate** WI handoff packet following Output Format above with auto-injected documents
-9. **Write** handoff packet to `deliverables/agent/<WI-ID>-handoff.md` using Write tool
+9. **Write** handoff packet to `deliverables/<PRJ>/<YYYYMMDD>/agent/<WI-ID>-handoff.md` using Write tool
 10. **Report** the file path to user for delegation
 
 ### Context Injection Algorithm
@@ -260,7 +285,7 @@ Upon invocation with WI assignment (after precondition passes):
 ```python
 def get_input_pointers(assignee: str, wi_summary: str, rules: dict) -> dict:
     """
-    Auto-generate INPUT POINTERS section from context-injection-rules.json
+    Auto-generate INPUT POINTERS section from context-injection-rules.json + module-injection-matrix.json
     """
     pointers = {"tier_0": [], "tier_1": [], "tier_2": [], "tier_3": []}
 
@@ -281,7 +306,7 @@ def get_input_pointers(assignee: str, wi_summary: str, rules: dict) -> dict:
                 for doc in tech_config.get("documents", []):
                     pointers[f"tier_{tier}"].append(doc)
 
-    # Step 3: Task-type keyword matching (Tier 2/3)
+    # Step 3: Task-type keyword matching (Tier 1/2)
     summary_lower = wi_summary.lower()
     for task_type in rules["task_type_documents"]["types"]:
         for keyword in task_type["keywords"]:

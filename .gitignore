@@ -50,6 +50,8 @@ projects/
 # === 팀 공유용 추가 항목 ===
 .claude/settings.json
 .claude/settings.local.json
+.claude/teams/
+.claude/tasks/
+.claude/projects/
 deliverables/**
-!deliverables/user/.gitkeep
-!deliverables/agent/.gitkeep
+!deliverables/.gitkeep

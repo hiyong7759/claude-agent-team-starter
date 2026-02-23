@@ -4,7 +4,7 @@ description: This skill should be used when designing minimal context injection 
 disable-model-invocation: false
 user-invocable: true
 allowed-tools: Read, Grep, Glob
-model: sonnet
+model: opus
 version: 2.0
 last_updated: 2026-02-01
 ---
@@ -25,7 +25,7 @@ Design minimal context injection bundles to maximize Subagent performance while 
 
 ### Rule Engine Reference
 
-**Configuration**: `.claude/config/context-injection-rules.json`
+**Configuration**: `.claude/config/context-injection-rules.json` + `.claude/config/module-injection-matrix.json`
 
 The rule engine provides:
 - `tier_defaults`: Path patterns → Tier level (0-3)
@@ -50,9 +50,9 @@ Step 1: REQUIRED
 Step 2: CONDITIONAL (if task_type specified)
   - Add task_type_documents[task_type]
   - Examples:
-    - security → security-policy.md, access-control-policy.md
-    - architecture → system-design.md, docs/adr/*
-    - testing → quality-gates.md, eval-golden-set.md
+    - security → docs/rules/security-rules.md
+    - architecture → docs/adr/*
+    - testing → docs/rules/test-rules.md, docs/rules/quality-gates-rules.md
 
 Step 3: OPTIONAL
   - Check document metadata (frontmatter):
@@ -68,19 +68,19 @@ Output: Sorted list of document paths
 
 ### Quick Reference Table
 
-| Assignee | Required Tiers | Tier 0 Docs | Tier 1 Docs |
-|----------|---------------|-------------|-------------|
-| ps | [0] | core-principles | - |
-| eo | [0, 1] | core-principles | policies/*, architecture |
-| sa | [0, 1] | core-principles, dev-standards | adr/*, architecture |
-| se | [0] | core-principles, dev-standards | - |
-| re | [0] | core-principles | - |
-| pg | [0, 1] | core-principles, security-policy | access-control |
-| tr | [0] | core-principles | - |
-| uv | [0] | core-principles | - |
-| docops | [0, 1] | core-principles, doc-standards, glossary | template-governance |
-| qa | [0] | core-principles, dev-standards | - |
-| cr | [0, 1] | core-principles, dev-standards | security-policy, adr/* |
+| Assignee | Tier 0 Modules | Tier 1 Modules |
+|----------|---------------|---------------|
+| ps | hard-rules, output-contracts | - |
+| eo | hard-rules, output-contracts | execution-rules |
+| sa | hard-rules, output-contracts | - |
+| se | hard-rules, output-contracts | naming-rules |
+| re | hard-rules, output-contracts | test-rules |
+| pg | hard-rules, output-contracts | security-rules, execution-rules |
+| tr | hard-rules, output-contracts | - |
+| uv | hard-rules, output-contracts | naming-rules |
+| docops | hard-rules, output-contracts | doc-rules, glossary |
+| qa | hard-rules, output-contracts | test-rules, quality-gates-rules |
+| cr | hard-rules, output-contracts | review-rules, naming-rules, security-rules |
 
 ### Process
 
@@ -99,15 +99,12 @@ Provide the minimal context bundle:
 Assignee: <agent>
 Task Type: <type or ->
 
-Tier 0 (Required - Constitution):
-- docs/standards/core-principles.md
+Tier 0 (Required - All Agents):
+- docs/rules/hard-rules.md
+- docs/rules/output-contracts.md
 
-Tier 0 (Required - Standards for Assignee):
-- docs/standards/development-standards.md (if se|sa|qa|cr)
-
-Tier 1 (Conditional - Task Type):
-- docs/policies/security-policy.md (if task: security)
-- docs/architecture/system-design.md (if task: architecture)
+Tier 1 (Agent-Specific - from module-injection-matrix.json):
+- docs/rules/<module>.md (based on agent_matrix[assignee])
 
 Additional (from document metadata):
 - <any docs with target_agents matching assignee>
@@ -124,16 +121,16 @@ Assignee: se
 Task Type: implementation
 
 Tier 0 (Required):
-- docs/standards/core-principles.md
-- docs/standards/development-standards.md
+- docs/rules/hard-rules.md
+- docs/rules/output-contracts.md
 
-Tier 1 (Conditional):
-- (none for implementation type)
+Tier 1 (Agent-Specific):
+- docs/rules/naming-rules.md
 
-Total: 2 documents
+Total: 3 modules
 
-Rule Source: .claude/config/context-injection-rules.json
-agent_required_tiers["se"] = [0]
+Rule Source: .claude/config/module-injection-matrix.json
+agent_matrix["se"] = ["hard-rules", "output-contracts", "naming-rules"]
 ```
 
 ### Example: PG Security Task
@@ -145,17 +142,17 @@ Assignee: pg
 Task Type: security
 
 Tier 0 (Required):
-- docs/standards/core-principles.md
+- docs/rules/hard-rules.md
+- docs/rules/output-contracts.md
 
-Tier 1 (Required + Task):
-- docs/policies/security-policy.md
-- docs/policies/access-control-policy.md
+Tier 1 (Agent-Specific + Task):
+- docs/rules/security-rules.md
+- docs/rules/execution-rules.md
 
-Total: 3 documents
+Total: 4 modules
 
-Rule Source: .claude/config/context-injection-rules.json
-agent_required_tiers["pg"] = [0, 1]
-task_type_documents["security"] = [security-policy.md, access-control-policy.md]
+Rule Source: .claude/config/module-injection-matrix.json
+agent_matrix["pg"] = ["hard-rules", "output-contracts", "security-rules", "execution-rules"]
 ```
 
 ## Guidelines

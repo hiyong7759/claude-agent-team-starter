@@ -51,18 +51,12 @@ Documentation Index Sync Check
 
 | Category | Index Count | Actual Count | Status |
 |----------|-------------|--------------|--------|
-| Architecture | 1 | 1 | Match |
-| Design | 2 | 2 | Match |
-| Guides | 11 | 12 | Mismatch |
-| Policies | 7 | 7 | Match |
-| Standards | 9 | 9 | Match |
+| Rules | 13 | 13 | Match |
 | Templates | 18 | 18 | Match |
 | Registry | 4 | 4 | Match |
 | ADR | 1 | 1 | Match |
-| Analysis | 2 | 2 | Match |
-| Eval | 0 | 0 | Match |
 
-Result: 1 mismatch found
+Result: 0 mismatches found
 Action Required: Run with --fix flag to update docs/index.md
 ```
 
@@ -111,25 +105,17 @@ The skill counts markdown files in the following directories:
 
 | Category | Directory Path | Count Rules |
 |----------|---------------|-------------|
-| Architecture | `docs/architecture/` | Exclude `index.md` |
-| Design | `docs/design/` | Recursive (includes subdirectories like `protocols/`) |
-| Guides | `docs/guides/` | Exclude `index.md` |
-| Policies | `docs/policies/` | Exclude `index.md` |
-| Standards | `docs/standards/` | Exclude `index.md` |
+| Rules | `docs/rules/` | All .md files |
 | Templates | `docs/templates/` | Exclude `index.md` |
 | Registry | `docs/registry/` | Exclude `index.md` |
 | ADR | `docs/adr/` | Exclude `index.md` |
-| Analysis | `docs/analysis/` | Exclude `index.md` |
-| Eval | `docs/eval/` | Exclude `index.md` |
 
 ## Counting Rules
 
 1. **File Type**: Count only `.md` files (markdown)
 2. **Exclusions**: Exclude `index.md` files from count
-3. **Recursion**: For Design category, include subdirectories recursively
-4. **Command Format**:
+3. **Command Format**:
    - Standard: `find docs/<category>/ -maxdepth 1 -name "*.md" ! -name "index.md" | wc -l`
-   - Design (recursive): `find docs/design/ -name "*.md" ! -name "index.md" | wc -l`
 
 ## Implementation Notes
 
@@ -142,9 +128,9 @@ The skill counts markdown files in the following directories:
 
 ## Example Workflow
 
-1. Developer adds a new guide: `docs/guides/new-workflow.md`
+1. Developer adds a new rule module: `docs/rules/new-rule.md`
 2. Run `/sync-docs-index` to check status
-3. See mismatch: Guides shows 11 in index but 12 actual files
+3. See mismatch: Rules shows 13 in index but 14 actual files
 4. Run `/sync-docs-index --fix` to update
-5. Verify: Index now shows 12 for Guides category
+5. Verify: Index now shows 14 for Rules category
 6. Proceed with `/validate-docs` for full documentation validation

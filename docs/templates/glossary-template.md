@@ -22,7 +22,7 @@ dependencies:
 ## 1) Operating Rules
 
 - This file is stored in `docs/project/glossary.md` (or equivalent location) in **project repo**.
-- If **conflict** with System (Global) glossary (`agentic-subagent-team/docs/standards/glossary.md`):
+- If **conflict** with System (Global) glossary (`agentic-subagent-team/docs/rules/glossary.md`):
   - Specify "meaning in this project" in this file
   - Reflect in Terminology section of `docs/templates/domain-context-template.md`
 - For tags/keywords, use **Key (standard term key)** when possible

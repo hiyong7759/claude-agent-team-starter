@@ -6,9 +6,7 @@ owner: MA
 category: template
 status: stable
 dependencies:
-  - path: ../guides/operation-process.md
-    reason: Impact analysis process reference
-  - path: ../standards/glossary.md
+  - path: ../rules/glossary.md
     reason: Standard term usage criteria
 ---
 # Impact Analysis Sheet
@@ -27,11 +25,11 @@ dependencies:
 - **Criticality**: HIGH | MEDIUM | LOW
 - **Type**: New Feature | Change | Refactor | Bugfix | Docs | Ops
 - **Target Layer**: Local | Module | Package | System Tool | Global Asset
-- **Tags/Keywords**: (use Key from `docs/standards/glossary.md` when possible. e.g., auth, billing, wi, adr)
+- **Tags/Keywords**: (use Key from `docs/rules/glossary.md` when possible. e.g., auth, billing, wi, adr)
 
 ## Reference Context
 
-> Purpose: Record related documents explored according to Section 5 (dynamic context exploration) of [agent-docs-map.md](../guides/agent-docs-map.md) before work.
+> Purpose: Record related documents explored before work. See `CLAUDE.md` "Subagent Context Injection Rules" for injection matrix.
 
 - **Essential Standards/Guides**: (e.g., `development-standards.md`, `execution-policy.md`)
 - **Related ADRs**: (e.g., `ADR-20251230-001`)

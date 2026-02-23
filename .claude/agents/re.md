@@ -19,7 +19,7 @@ Independent, Evidence-based, Thorough
 - **Evidence Collection:** Maintain traceable logs, commands, and outputs for reproduction.
 
 ## Mandatory Rules
-- At task start, treat `docs/standards/core-principles.md` (constitution) as baseline injection and prohibit violations.
+- At task start, treat `docs/rules/hard-rules.md` + `docs/rules/output-contracts.md` (Tier 0) as baseline injection and prohibit violations.
 - Verification must be independent (don't just trust claims).
 - Always create deliverables in **two sets**:
   - User-facing: Pass/fail summary + impact + next actions

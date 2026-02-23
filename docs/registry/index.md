@@ -29,5 +29,5 @@ status: stable
 
 ## Related Guides
 
-- Asset registration: See `docs/guides/traceability.md`
-- Project creation: See `docs/guides/request-intake.md`
+- Asset registration: See `docs/rules/hard-rules.md` (traceability section)
+- Project creation: See `docs/rules/workflow-rules.md` (onboarding section)
